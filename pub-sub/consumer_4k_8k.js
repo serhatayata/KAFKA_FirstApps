@@ -7,13 +7,13 @@ async function createConsumer() {
   try {
     
     const kafka = new Kafka({
-      clientId: "kafka_log_store_client",
+      clientId: "kafka_pub_sub_client",
       brokers: ["192.168.56.1:9092"]
     });
 
     const consumer = kafka.consumer(
       {
-        groupId : "log_store_consumer_group"
+        groupId : "hd_4k_8k_encoder_consumer_group"
       }
     );
     console.log("Consumer'a bağlanılıyor...");
@@ -22,13 +22,13 @@ async function createConsumer() {
 
     //Consumer subscribe
     await consumer.subscribe({
-      topic:"LogStoreTopic",
+      topic:"raw_video_topic",
       fromBeginning:true
     })
 
     await consumer.run({
       eachMessage: async result => {
-        console.log(`Gelen mesaj : ${result.message.value} : Partition => ${result.partition} `)
+        console.log(`İşlenen video : ${result.message.value}_4k_8k_encoder : Partition => ${result.partition} `)
       }
     })
 

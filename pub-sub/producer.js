@@ -1,14 +1,12 @@
 const { Kafka } = require("kafkajs");
 
-const log_data = require("./system_logs.json")
-
 createProducer();
 
 async function createProducer() {
   try {
     
     const kafka = new Kafka({
-      clientId: "kafka_log_store_client",
+      clientId: "kafka_pub_sub_client",
       brokers: ["192.168.56.1:9092"]
     });
 
@@ -17,16 +15,14 @@ async function createProducer() {
     await producer.connect();
     console.log("Producer'a bağlantı başarılı");
 
-    let messages = log_data.map(item => {
-      return {
-        value:JSON.stringify(item),
-        partition:item.type == "system" ? 0 : 1
-      }
-    });
-
     const message_result = await producer.send({
-      topic: "LogStoreTopic",
-      messages: messages
+      topic: "raw_video_topic",
+      messages: [
+        {
+          value:"Yeni video içeriği",
+          partition:0
+        }
+      ]
     })
 
     console.log("Gonderim basarilidir", JSON.stringify(message_result));

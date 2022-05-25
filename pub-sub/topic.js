@@ -6,7 +6,7 @@ async function createTopic() {
   try {
     // Admin Stuff..
     const kafka = new Kafka({
-      clientId: "kafka_log_store_client",
+      clientId: "kafka_pub_sub_client",
       brokers: ["192.168.56.1:9092"]
     });
 
@@ -17,8 +17,8 @@ async function createTopic() {
     await admin.createTopics({
       topics: [
         {
-          topic: "LogStoreTopic",
-          numPartitions: 2
+          topic: "raw_video_topic",
+          numPartitions: 1
         }
       ]
     });
